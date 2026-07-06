@@ -1,0 +1,64 @@
+#!/bin/sh
+set -eu
+
+appdir=${APPDIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}
+payload="$appdir/usr/lib/gowin-eda"
+ide="$payload/IDE"
+
+find_host_library()
+{
+    library=$1
+
+    for directory in \
+        /usr/lib \
+        /usr/lib64 \
+        /usr/lib/x86_64-linux-gnu \
+        /lib \
+        /lib64 \
+        /lib/x86_64-linux-gnu
+    do
+        if [ -r "$directory/$library" ]; then
+            printf '%s\n' "$directory/$library"
+            return 0
+        fi
+    done
+
+    if command -v ldconfig >/dev/null 2>&1; then
+        ldconfig -p 2>/dev/null |
+            awk -v library="$library" \
+                '$1 == library && $0 ~ /x86-64/ { print $NF; exit }'
+        return
+    fi
+
+    return 1
+}
+
+require_host_library()
+{
+    path=$(find_host_library "$1")
+    if [ -z "$path" ]; then
+        printf 'GOWIN EDA: required host library not found: %s\n' "$1" >&2
+        exit 127
+    fi
+    printf '%s\n' "$path"
+}
+
+freetype=$(require_host_library libfreetype.so.6)
+preload="$freetype${LD_PRELOAD:+:$LD_PRELOAD}"
+
+export QT_QPA_PLATFORM=xcb
+
+if [ "${GOWIN_OPENGL:-0}" = 1 ]; then
+    libstdcxx=$(require_host_library libstdc++.so.6)
+    libgldispatch=$(require_host_library libGLdispatch.so.0)
+    libglx=$(require_host_library libGLX.so.0)
+
+    preload="$payload/compat/libgowin-env-shim.so:$libstdcxx:$libgldispatch:$libglx:$preload"
+    export QT_XCB_GL_INTEGRATION=xcb_glx
+fi
+
+export LD_LIBRARY_PATH="$ide/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_PRELOAD="$preload"
+
+cd "$ide"
+exec ./bin/gw_ide "$@"

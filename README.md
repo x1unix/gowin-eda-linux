@@ -12,6 +12,12 @@ This repo provides a set of fixes to make it work.
 2. [Download](https://github.com/x1unix/gowin-eda-fixes/archive/refs/heads/main.zip) this repository and extract it **near** the `IDE` directory of the application.
 3. Use the [`start-ide.sh`](start-ide.sh) shell script to launch the IDE.
 
+### Extra Items
+
+#### AppImage Generator
+
+This repo provides an [AppImage packaging script](./packaging/appimage/) to generate a portable Linux executable file. 
+
 ## Known Issues
 
 ### Native Wayland Support

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=GOWIN EDA
+GenericName=FPGA Design Environment
+Comment=Design, synthesize, place and route GOWIN FPGA projects
+Exec=gowin-eda
+Icon=gowin-eda
+Terminal=false
+Categories=Development;IDE;Electronics;
+Keywords=FPGA;EDA;HDL;Verilog;VHDL;Synthesis;
+StartupNotify=true
