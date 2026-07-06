@@ -2,7 +2,7 @@
 
 Out of the box, Gowin EDA doesn't work as it isn't packaged properly.
 
-This gist provides a set of fixes to make it work.
+This repo provides a set of fixes to make it work.
 
 **Disclaimer:** Most of research is done by OpenAI Codex. See [the research doc](CODEX_RESEARCH.md)
 
