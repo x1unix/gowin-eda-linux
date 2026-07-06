@@ -1,5 +1,4 @@
 # Gowin EDA Education Linux Fixes
----
 
 Out of the box, Gowin EDA doesn't work as it isn't packaged properly.
 
