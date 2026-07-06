@@ -1,0 +1,6 @@
+Qt_5 {
+    global:
+        _Z7qputenvPKcRK10QByteArray;
+    local:
+        *;
+};
