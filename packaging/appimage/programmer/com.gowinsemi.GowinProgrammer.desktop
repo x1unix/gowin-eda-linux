@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=GOWIN Programmer
+GenericName=FPGA Programmer
+Comment=Configure and program GOWIN FPGA devices
+Exec=gowin-programmer
+Icon=gowin-programmer
+Terminal=false
+Categories=Development;Electronics;
+Keywords=FPGA;GOWIN;Programmer;JTAG;Configuration;
+StartupNotify=true

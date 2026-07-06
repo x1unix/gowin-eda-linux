@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.gowinsemi.GowinProgrammer</id>
+  <name>GOWIN Programmer</name>
+  <summary>FPGA device programming utility</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <developer id="com.gowinsemi">
+    <name>GOWIN Semiconductor</name>
+  </developer>
+  <url type="homepage">https://www.gowinsemi.com/en/support/home/</url>
+  <description>
+    <p>
+      GOWIN Programmer provides JTAG and device configuration workflows for
+      programming GOWIN FPGA devices.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.gowinsemi.GowinProgrammer.desktop</launchable>
+  <provides>
+    <binary>programmer</binary>
+  </provides>
+  <categories>
+    <category>Development</category>
+    <category>Electronics</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+</component>

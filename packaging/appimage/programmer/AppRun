@@ -1,0 +1,55 @@
+#!/bin/sh
+set -eu
+
+appdir=${APPDIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}
+payload="$appdir/usr/lib/gowin-eda"
+programmer="$payload/Programmer"
+
+find_host_library()
+{
+    library=$1
+
+    for directory in \
+        /usr/lib \
+        /usr/lib64 \
+        /usr/lib/x86_64-linux-gnu \
+        /lib \
+        /lib64 \
+        /lib/x86_64-linux-gnu
+    do
+        if [ -r "$directory/$library" ]; then
+            printf '%s\n' "$directory/$library"
+            return 0
+        fi
+    done
+
+    if command -v ldconfig >/dev/null 2>&1; then
+        ldconfig -p 2>/dev/null |
+            awk -v library="$library" \
+                '$1 == library && $0 ~ /x86-64/ { print $NF; exit }'
+        return
+    fi
+
+    return 1
+}
+
+require_host_library()
+{
+    path=$(find_host_library "$1")
+    if [ -z "$path" ]; then
+        printf 'GOWIN Programmer: required host library not found: %s\n' "$1" >&2
+        exit 127
+    fi
+    printf '%s\n' "$path"
+}
+
+zlib=$(require_host_library libz.so.1)
+freetype=$(require_host_library libfreetype.so.6)
+
+export LD_LIBRARY_PATH="$programmer/bin${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_PRELOAD="$zlib:$freetype${LD_PRELOAD:+:$LD_PRELOAD}"
+export QT_PLUGIN_PATH="$programmer/bin/PyQt5/qt-plugins"
+export QT_QPA_PLATFORM=xcb
+
+cd "$programmer"
+exec ./bin/programmer "$@"
